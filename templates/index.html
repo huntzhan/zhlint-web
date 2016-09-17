@@ -60,7 +60,7 @@
       <div class="col-sm-6">
         <div class="panel panel-default">
           <div class="panel-body" style="height:535px">
-            <iframe frameborder="0" height="100%" width="100%" src="/default_console.html"></iframe>
+            <iframe id="iframe_console" frameborder="0" height="100%" width="100%" src="/default_console.html"></iframe>
           </div>
         </div>
       </div>
@@ -87,5 +87,36 @@
       maxLines: Infinity
     });
   </script>
+
+  <script type="text/javascript">
+  $(function(){
+    var editor = ace.edit("editor");
+
+    var updateConsole = function(data, status){
+      var iframe = document.getElementById('iframe_console');
+      iframe.contentWindow.document.open();
+      iframe.contentWindow.document.write(data);
+      iframe.contentWindow.document.close();
+    };
+
+    $("#check_button").click(function(){
+      $.post(
+        "/check/",
+        editor.getValue(),
+        updateConsole
+      );
+    });
+
+    $("#fix_button").click(function(){
+      $.post(
+        "/fix/",
+        editor.getValue(),
+        updateConsole
+      );
+    });
+
+  });
+  </script>
+
 </body>
 </html>
