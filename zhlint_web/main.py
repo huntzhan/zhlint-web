@@ -5,7 +5,9 @@ from __future__ import (
 from builtins import *                  # noqa
 from future.builtins.disabled import *  # noqa
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+
+from zhlint_web.zhlint_operation import zhlint_check, zhlint_fix
 
 app = Flask('zhlint-web')
 
@@ -18,6 +20,18 @@ def default_console_html():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/check/', methods=['POST'])
+def check():
+    file_content = request.get_data(as_text=True)
+    return zhlint_check(file_content)
+
+
+@app.route('/fix/', methods=['POST'])
+def fix():
+    file_content = request.get_data(as_text=True)
+    return zhlint_fix(file_content)
 
 
 def entry_point():
