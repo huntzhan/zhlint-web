@@ -15,8 +15,8 @@ from flask import render_template
 def dump2tmpfile(func):
 
     def wrapper(file_content):
-        with NamedTemporaryFile() as fin:
-            with NamedTemporaryFile() as fout:
+        with NamedTemporaryFile(prefix='zhlint-fin-') as fin:
+            with NamedTemporaryFile(prefix='zhlint-fout-') as fout:
                 # input.
                 with open(fin.name, encoding='utf-8', mode='w') as _f:
                     _f.write(file_content)
@@ -35,11 +35,7 @@ def dump2tmpfile(func):
 @dump2tmpfile
 def run_bash_script(fin, fout):
     subprocess.call(
-        'chmod +x "{0}"'.format(fin.name),
-        shell=True,
-    )
-    subprocess.call(
-        fin.name,
+        'bash "{0}"'.format(fin.name),
         shell=True,
     )
 
