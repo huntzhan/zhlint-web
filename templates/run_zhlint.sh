@@ -8,7 +8,7 @@ export LANGUAGE=en_US.UTF-8
 
 export PYENV_VERSION={{ pyenv_python_version }}
 
-script -q -c '{{ zhlint_command }} "{{ input_file }}"' /dev/null zhlint | ansi2html > "{{ output_file }}"
+script -q -c 'zhlint {{ zhlint_command }} "{{ input_file }}"' /dev/null | ansi2html > "{{ output_file }}"
 
 # Reset version
 unset PYENV_VERSION
